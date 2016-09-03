@@ -12,16 +12,17 @@ $(document).ready(function(){
 	function makeButtons() {
 		$('#buttons').empty();
 
-		for (var i = 0; i < showsArray.length; i++) {
+		for (var j = 0; j < showsArray.length; j++) {
 			var button = $('<button>')
 				.addClass('show')
-				.attr('data-name', showsArray[i])
-				.text(showsArray[i]);
+				.attr('data-name', showsArray[j])
+				.text(showsArray[j]);
 
 			$('#buttons').append(button);
 		}
 	}
 
+	makeButtons();
 
 	// instructions for what to do when a button is clicked
 	$('#addShow').on('click', function() {
@@ -31,7 +32,7 @@ $(document).ready(function(){
 		return false;
 	})
 
-	makeButtons();
+	
 
 
 
@@ -53,15 +54,19 @@ $(document).ready(function(){
 
 			for (var i = 0; i < response.data.length; i++) {
 
-				var image = $('<img>').attr('src', response.data[i].images.fixed_height.url);
+				var image = $('<img>')
+					.attr('src', response.data[i].images.fixed_height_still.url)
+					.addClass('giphyImage')
+					.attr('data-still', response.data[i].images.fixed_height_still.url)
+					.attr('data-animate', response.data[i].images.fixed_height.url)
+					.attr('data-state', 'still');
 
 				var rating = $('<p>').html(response.data[i].rating);
 
 				console.log(response.data[i].rating);
 
 				gifDiv.append(image)
-
-				gifDiv.append(response.data[i].rating);
+				gifDiv.append('<br><p class="rating">Rating: ' + response.data[i].rating + '</p><br>');
 
 			}
 
@@ -73,13 +78,23 @@ $(document).ready(function(){
 
 
 
+	// CLICK GIF TO ANIMATE not working wooooo
 
+	// $('.giphyImage').on('click', function() {
+	// 	var state = $(this).attr('data-state');
+	// 	console.log(state);
+
+	// 	if (state == 'still') {
+	// 		$(this).attr('src', $(this).data('animate'));
+	// 		$(this).attr('data-state', 'animate');
+	// 	}
+	// 	else {
+	// 		$(this).attr('src', $(this).data('still'));
+	// 		$(this).attr('data-state', 'still');
+	// 	}
+	// });
 	
 	
-
-
-
-
 
 
 
