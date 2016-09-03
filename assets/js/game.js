@@ -38,46 +38,43 @@ $(document).ready(function(){
 
 	// MAKING GIFs APPEAR WHEN A BUTTON IS CLICKED
 
-
-	// button click handler instructions
 	$('button').on('click', function() {
+		var gif = $(this).attr('data-name').split(' ').join('+');
+		console.log(gif);
+	
+		var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif + "&api_key=dc6zaTOxFJmzC&limit=10";
 
-		// I don't know what this is supposed to be for
+		console.log(queryURL);
+
+		$.ajax({url: queryURL, method: 'GET'}).done(function(response) {
+
+			var gifDiv = $('<div class="gif">');
 
 
-		// create a variable to store the data-name value of a button in
-		var show = $(this).data('name');
+			for (var i = 0; i < response.data.length; i++) {
 
-		// variable that creates the query URL
-		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + show + "&api_key=dc6zaTOxFJmzC&limit=10";
+				var image = $('<img>').attr('src', response.data[i].images.fixed_height.url);
 
-		// AJAX doing its thing
-		$.ajax({url:queryURL, method: 'GET'})
-			.done(function(response) {
+				var rating = $('<p>').html(response.data[i].rating);
 
-				// storing the parts of the ajax query that I want to use
-				var results = response.data;
+				console.log(response.data[i].rating);
 
-				// looping through the results of the query
-				for (var j = 0; j < results.length; j++) {
+				gifDiv.append(image)
 
-					var gifDiv = $('<div class="image">');
-					var rating = results[j].rating;
-					var paragraph = $('<p>').text('Rating: ' + rating);
-					var image = $('<img>')
-						.attr('src', results[j].images.fixed_height.url);
+				gifDiv.append(response.data[i].rating);
 
-					gifDiv.append(paragraph);
-					gifDiv.append(image);
+			}
 
-					$('showGifs').prepend(gifDiv);
-				}
+			$('#showGifs').prepend(gifDiv);
 
-			})
-
+		})
 
 	});
 
+
+
+
+	
 	
 
 
